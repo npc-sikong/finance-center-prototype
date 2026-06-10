@@ -33,6 +33,9 @@
   .content { padding: 12px; overflow: visible; }
   .page, .panel { max-width: 100%; }
   .page-head { display: grid; }
+  .module-guide { padding: 12px; }
+  .module-guide-grid { grid-template-columns: 1fr; }
+  .module-guide-item { grid-template-columns: 1fr; gap: 2px; }
   .ledger-board-head { display: grid; }
   .ledger-board-toolbar { justify-content: stretch; }
   .ledger-board-quick { grid-template-columns: repeat(2, minmax(0, 1fr)); }

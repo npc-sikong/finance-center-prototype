@@ -105,6 +105,61 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 .page-subtitle { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
 .action-bar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; flex: 0 0 auto; }
 
+.module-guide {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  display: grid;
+  gap: 10px;
+}
+.module-guide-main {
+  display: grid;
+  gap: 4px;
+  max-width: 76ch;
+}
+.module-guide-main h2 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.module-guide-main p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.module-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 12px;
+}
+.module-guide-item {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.module-guide-item strong {
+  color: var(--ink);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.module-guide-item span {
+  min-width: 0;
+}
+.module-guide-boundary {
+  border-top: 1px solid var(--line);
+  padding-top: 9px;
+  color: #6b4c08;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
 .btn {
   height: 34px;
   border: 1px solid var(--line-strong);
