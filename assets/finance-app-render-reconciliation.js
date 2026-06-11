@@ -127,7 +127,7 @@ function reconciliationDisplayRows() {
           ${renderTable({
             id: "reconciliation-ledger",
             rows,
-            columns: ["更新时间","核销对象","业务单号","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","来源单据","核销关系","金额","差异","核销状态","凭证号","关联账本","后端落账状态","财务处理建议"],
+            columns: ["更新时间","核销对象","业务单号","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","来源单据","核销关系","金额","差异","核销状态","凭证号","关联账本","后端落账状态","财务处理建议"],
             actions: row => `
               <button class="btn sm" data-action="detail-reconciliation" data-id="${escapeAttr(row._id)}">详情</button>
               ${row._voucherNo ? `<button class="btn sm" data-action="detail-voucher" data-id="${escapeAttr(row._voucherNo)}">凭证</button>` : ""}
