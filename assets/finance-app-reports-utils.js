@@ -440,8 +440,8 @@ function formalSummary() {
     }
     function controlDirectionSign(direction) {
       const text = String(direction || "");
-      if (/减少|解锁|扣减|冲减|退回|归零/.test(text)) return -1;
-      if (/增加|锁定|冻结/.test(text)) return 1;
+      if (/减少|解锁|扣减|冲减|退回|归零|贷/.test(text)) return -1;
+      if (/增加|锁定|冻结|借/.test(text)) return 1;
       return 0;
     }
     function filteredReportBaseRows(kind = "all") {

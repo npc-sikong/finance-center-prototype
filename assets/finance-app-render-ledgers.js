@@ -411,8 +411,8 @@ function render() {
         const formalLines = lines.filter(line => line.formal && !String(line.subjectCode || "").startsWith("9"));
         const debit = sum(formalLines.filter(line => line.direction === "借"), "amount");
         const credit = sum(formalLines.filter(line => line.direction === "贷"), "amount");
-        const increase = sum(records.filter(row => !/减少|冲正/.test(String(row.direction || row.status || ""))), "amount");
-        const decrease = sum(records.filter(row => /减少|冲正/.test(String(row.direction || row.status || ""))).map(row => ({ ...row, amount: Math.abs(Number(row.amount || 0)) })), "amount");
+        const increase = sum(records.filter(row => controlDirectionSignForLedger(row.direction || row.status || "") > 0), "amount");
+        const decrease = sum(records.filter(row => controlDirectionSignForLedger(row.direction || row.status || "") < 0).map(row => ({ ...row, amount: Math.abs(Number(row.amount || 0)) })), "amount");
         const primaryAmount = profile.mode === "movement" ? increase : (debit || increase);
         const secondaryAmount = profile.mode === "movement" ? decrease : (credit || decrease);
         const currentRecord = latestLedgerRecord(records);
@@ -438,6 +438,13 @@ function render() {
           rangeText: ledgerBoardRangeText(records)
         };
       });
+    }
+
+    function controlDirectionSignForLedger(direction) {
+      const text = String(direction || "");
+      if (/减少|冲正|退回|归零|扣减|核销|解锁/.test(text) || /贷/.test(text)) return -1;
+      if (/增加|锁定|冻结|借/.test(text)) return 1;
+      return 0;
     }
     function ledgerMetricProfile(def) {
       const text = `${def.模块 || ""} ${def.建议表名 || ""} ${def["影响科目/台账"] || ""} ${def.开发说明 || ""}`;

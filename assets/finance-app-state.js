@@ -372,8 +372,19 @@ const LEGACY_LS_KEYS = ["financeCenterDemoState.v13", "financeCenterDemoState.v1
     }
 
     function normalizeEntryRow(row, index = 0) {
+      const templateCode = String(row["模板编码"] || "");
+      const subjectCode = String(row["科目编码"] || "");
+      let direction = row["借贷/信用方向"];
+      if (templateCode === "TPL-MDEP-001") {
+        if (subjectCode === "900101") {
+          direction = "借";
+        } else if (subjectCode === "900102") {
+          direction = "贷";
+        }
+      }
       return {
         ...row,
+        "借贷/信用方向": direction,
         entryLineId: row.entryLineId || `ENTRY-${String(index + 1).padStart(4, "0")}`
       };
     }
@@ -530,7 +541,13 @@ const LEGACY_LS_KEYS = ["financeCenterDemoState.v13", "financeCenterDemoState.v1
       const subject = subjectByCode[sourceCode] || {};
       const subjectCode = subject.科目编码 || sourceCode;
       const isControl = subjectCode.startsWith("9") || row.是否正式分录 === "否";
-      const direction = normalizeDirection(row["借贷/信用方向"], isControl);
+      let forcedDirection = "";
+      if (isControl && String(row["模板编码"] || "") === "TPL-MDEP-001") {
+        if (subjectCode === "900101") forcedDirection = "借";
+        else if (subjectCode === "900102") forcedDirection = "贷";
+      }
+      if (!forcedDirection && /借|贷/.test(String(row["借贷/信用方向"] || ""))) forcedDirection = String(row["借贷/信用方向"] || "");
+      const direction = forcedDirection || normalizeDirection(row["借贷/信用方向"], isControl);
       const amount = evaluateAmount(row.金额表达式);
       return {
         lineNo: Number(row.行号 || index + 1),
@@ -591,6 +608,8 @@ const LEGACY_LS_KEYS = ["financeCenterDemoState.v13", "financeCenterDemoState.v1
         if (text.includes("贷")) return "贷";
         return "借";
       }
+      if (text.includes("借")) return "借";
+      if (text.includes("贷")) return "贷";
       if (text.includes("减少") && text.includes("解锁")) return "减少/解锁";
       if (text.includes("增加") && text.includes("锁定")) return "增加/锁定";
       if (text.includes("减少") || text.includes("解锁")) return "减少";
