@@ -307,16 +307,13 @@ function formalSummary() {
           业务类型: row.bizName,
           站点ID: attribution.siteId,
           站点名称: attribution.siteName,
-          发起主体类型: attribution.initiatorType,
+          发起主体身份: attribution.initiatorType,
           发起主体ID: attribution.initiatorId,
           发起主体名称: attribution.initiatorName,
           代理ID: attribution.agentId,
           代理名称: attribution.agentName,
           会员ID: attribution.memberId,
           会员名称: attribution.memberName,
-          主体类型: attribution.initiatorType,
-          主体名称: attribution.initiatorName,
-          主体ID: attribution.initiatorId,
           科目编码: row.subjectCode,
           科目名称: row.subjectName,
           科目类型: row.subjectType || (row.entryKind === "信用台账" ? "信用台账" : ""),
@@ -355,14 +352,14 @@ function formalSummary() {
       const map = new Map();
       rows.forEach(row => {
         if (!row.formal || !row.subjectCode || String(row.subjectCode).startsWith("9")) return;
-        const groupKey = [row.subjectCode, row.站点ID, row.发起主体类型, row.发起主体ID].join("|");
+        const groupKey = [row.subjectCode, row.站点ID, row.发起主体身份, row.发起主体ID].join("|");
         const current = map.get(groupKey) || {
           subjectCode: row.subjectCode,
           subjectName: row.subjectName,
           subjectType: row.subjectType,
           站点ID: row.站点ID,
           站点名称: row.站点名称,
-          发起主体类型: row.发起主体类型,
+          发起主体身份: row.发起主体身份,
           发起主体ID: row.发起主体ID,
           发起主体名称: row.发起主体名称,
           代理ID: row.代理ID,
@@ -372,7 +369,7 @@ function formalSummary() {
           debit: 0,
           credit: 0,
           balance: 0,
-          主体类型: new Set(),
+          发起主体身份: new Set(),
           业务类型: new Set(),
           核销状态: new Set(),
           后端落账状态: new Set()
@@ -380,7 +377,7 @@ function formalSummary() {
         if (row.direction === "借") current.debit += Number(row.amount || 0);
         if (row.direction === "贷") current.credit += Number(row.amount || 0);
         current.balance = current.debit - current.credit;
-        if (row.主体类型) current.主体类型.add(row.主体类型);
+        if (row.发起主体身份) current.发起主体身份.add(row.发起主体身份);
         if (row.业务类型) current.业务类型.add(row.业务类型);
         if (row.核销状态) current.核销状态.add(row.核销状态);
         if (row.后端落账状态) current.后端落账状态.add(row.后端落账状态);
@@ -388,7 +385,7 @@ function formalSummary() {
       });
       return Array.from(map.values()).map(row => ({
         ...row,
-        主体类型: Array.from(row.主体类型).join("；"),
+        发起主体身份: Array.from(row.发起主体身份).join("；"),
         业务类型: Array.from(row.业务类型).slice(0, 4).join("；"),
         核销状态: Array.from(row.核销状态).join("；"),
         后端落账状态: Array.from(row.后端落账状态).join("；")
@@ -410,16 +407,13 @@ function formalSummary() {
             业务类型: row.业务类型,
             站点ID: row.站点ID,
             站点名称: row.站点名称,
-            发起主体类型: row.发起主体类型,
+            发起主体身份: row.发起主体身份,
             发起主体ID: row.发起主体ID,
             发起主体名称: row.发起主体名称,
             代理ID: row.代理ID,
             代理名称: row.代理名称,
             会员ID: row.会员ID,
             会员名称: row.会员名称,
-            主体类型: row.主体类型,
-            主体名称: row.主体名称,
-            主体ID: row.主体ID,
             subjectCode: row.subjectCode,
             subjectName: row.subjectName,
             subjectType: row.subjectType,
@@ -461,7 +455,7 @@ function formalSummary() {
       const map = new Map();
       rows.forEach(row => {
         const movement = controlMovement(row);
-        const key = [row.subjectCode, row.站点ID, row.发起主体类型, row.发起主体ID].join("|");
+        const key = [row.subjectCode, row.站点ID, row.发起主体身份, row.发起主体ID].join("|");
         const current = map.get(key) || {
           subjectCode: row.subjectCode,
           subjectName: row.subjectName,
@@ -469,7 +463,7 @@ function formalSummary() {
           控制账户说明: controlAccountNote(row.subjectCode),
           站点ID: row.站点ID,
           站点名称: row.站点名称,
-          发起主体类型: row.发起主体类型,
+          发起主体身份: row.发起主体身份,
           发起主体ID: row.发起主体ID,
           发起主体名称: row.发起主体名称,
           代理ID: row.代理ID,
@@ -517,10 +511,10 @@ function formalSummary() {
       const day = String(row.日期 || row.入账时间 || "").slice(0, 10);
       if (ui.reportFrom && day && day < ui.reportFrom) return false;
       if (ui.reportTo && day && day > ui.reportTo) return false;
-      if (ui.reportEntityTypeFilter && !String(row.主体类型 || "").includes(ui.reportEntityTypeFilter)) return false;
-      if (ui.reportEntitySearch && !normalize([row.站点ID, row.站点名称, row.发起主体类型, row.发起主体ID, row.发起主体名称, row.主体ID, row.主体名称, row.主体类型, row.代理ID, row.代理名称, row.会员ID, row.会员名称, row.业务单号, row.业务类型, row.sourceTable, row.sourceDoc, row.supplementLedger, row.备注].join(" ")).includes(normalize(ui.reportEntitySearch))) return false;
+      if (ui.reportEntityTypeFilter && !String(row.发起主体身份 || "").includes(ui.reportEntityTypeFilter)) return false;
+      if (ui.reportEntitySearch && !normalize([row.站点ID, row.站点名称, row.发起主体身份, row.发起主体ID, row.发起主体名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称, row.业务单号, row.业务类型, row.sourceTable, row.sourceDoc, row.supplementLedger, row.备注].join(" ")).includes(normalize(ui.reportEntitySearch))) return false;
       if (ui.reportSiteSearch && !normalize([row.站点ID, row.站点名称].join(" ")).includes(normalize(ui.reportSiteSearch))) return false;
-      if (ui.reportInitiatorSearch && !normalize([row.发起主体类型, row.发起主体ID, row.发起主体名称, row.主体ID, row.主体名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(normalize(ui.reportInitiatorSearch))) return false;
+      if (ui.reportInitiatorSearch && !normalize([row.发起主体身份, row.发起主体ID, row.发起主体名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(normalize(ui.reportInitiatorSearch))) return false;
       if (ui.reportSubjectTypeFilter && row.subjectType !== ui.reportSubjectTypeFilter) return false;
       if (ui.reportSubjectSearch && !normalize([row.subjectCode, row.subjectName, row.科目编码, row.科目名称].join(" ")).includes(normalize(ui.reportSubjectSearch))) return false;
       if (ui.reportDirectionFilter && row.direction !== ui.reportDirectionFilter) return false;
@@ -556,7 +550,7 @@ function formalSummary() {
       return {
         开始日期: ui.reportFrom || "全部",
         结束日期: ui.reportTo || "全部",
-        发起主体类型: ui.reportEntityTypeFilter || "全部",
+        发起主体身份: ui.reportEntityTypeFilter || "全部",
         站点搜索: ui.reportSiteSearch || "全部",
         发起主体搜索: ui.reportInitiatorSearch || ui.reportEntitySearch || "全部",
         科目类型: ui.reportSubjectTypeFilter || "全部",
@@ -589,8 +583,8 @@ function formalSummary() {
     function buildEntityAttribution(row = {}, entityText = "", entityType = "") {
       const text = `${entityText || ""} ${row.bizName || row.业务类型 || ""} ${row.subjectName || row.主体名称 || ""} ${row.entity || row.主体 || ""} ${row.note || row.备注 || ""} ${row.sourceTable || ""} ${row.sourceDoc || ""} ${row.supplementLedger || ""}`;
       const inferredType = reportInitiatorType(text, entityType);
-      const directText = `${row.preferredType || row.主体类型 || row.subjectType || ""} ${row.bizName || row.业务类型 || ""} ${row.subjectName || row.主体名称 || ""} ${row.entity || row.主体 || ""}`;
-      const primaryType = normalizePrimaryEntityType(row.preferredType || row.主体类型 || row.subjectType || inferredType, `${directText} ${text}`, inferredType);
+      const directText = `${row.preferredType || row.发起主体身份 || row.主体类型 || row.subjectType || ""} ${row.bizName || row.业务类型 || ""} ${row.主体名称 || row.subjectName || ""} ${row.entity || row.主体 || ""}`;
+      const primaryType = normalizePrimaryEntityType(row.preferredType || row.发起主体身份 || row.主体类型 || row.subjectType || inferredType, `${directText} ${text}`, inferredType);
       const sourceId = row.sourceId || row.业务单号 || row.源业务单号 || row.源单 || "";
       const voucherNo = row.voucherNo || row.凭证号 || "";
       const seed = `${sourceId}|${voucherNo}|${row.templateCode || row.模板编码 || ""}`;
@@ -631,6 +625,9 @@ function formalSummary() {
       };
       return {
         ...result,
+        发起主体身份: result.主体类型,
+        发起主体ID: result.主体ID,
+        发起主体名称: result.主体名称,
         siteId: result.站点ID,
         siteName: result.站点名称,
         initiatorType: result.主体类型,
@@ -674,12 +671,9 @@ function formalSummary() {
       return {
         站点ID: attribution.siteId,
         站点名称: attribution.siteName,
-        发起主体类型: attribution.initiatorType,
+        发起主体身份: attribution.initiatorType,
         发起主体ID: attribution.initiatorId,
         发起主体名称: attribution.initiatorName,
-        主体类型: attribution.initiatorType,
-        主体ID: attribution.initiatorId,
-        主体名称: attribution.initiatorName,
         代理ID: attribution.agentId,
         代理名称: attribution.agentName,
         会员ID: attribution.memberId,

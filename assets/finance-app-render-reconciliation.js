@@ -21,12 +21,9 @@ function reconciliationDisplayRows() {
           业务单号: row.sourceId || voucher.sourceId || "",
           站点ID: attribution.站点ID,
           站点名称: attribution.站点名称,
-          发起主体类型: attribution.initiatorType,
+          发起主体身份: attribution.initiatorType,
           发起主体ID: attribution.initiatorId,
           发起主体名称: attribution.initiatorName,
-          主体类型: attribution.主体类型,
-          主体ID: attribution.主体ID,
-          主体名称: attribution.主体名称,
           代理ID: attribution.代理ID,
           代理名称: attribution.代理名称,
           会员ID: attribution.会员ID,
@@ -48,7 +45,7 @@ function reconciliationDisplayRows() {
       return (rows || []).filter(row => {
         if (ui.reconciliationObjectFilter && row.核销对象 !== ui.reconciliationObjectFilter) return false;
         if (ui.reconciliationSourceDocFilter && row.来源单据 !== ui.reconciliationSourceDocFilter) return false;
-        if (ui.reconciliationInitiatorTypeFilter && row.发起主体类型 !== ui.reconciliationInitiatorTypeFilter) return false;
+        if (ui.reconciliationInitiatorTypeFilter && row.发起主体身份 !== ui.reconciliationInitiatorTypeFilter) return false;
         if (!rowMatchesEntityOption(row, "站点ID", "站点名称", ui.reconciliationSiteFilter)) return false;
         if (!rowMatchesEntityOption(row, "发起主体ID", "发起主体名称", ui.reconciliationInitiatorFilter)) return false;
         if (ui.reconciliationRelationFilter && row.核销关系 !== ui.reconciliationRelationFilter) return false;
@@ -69,7 +66,7 @@ function reconciliationDisplayRows() {
         核销对象: ui.reconciliationObjectFilter || "全部",
         来源单据: ui.reconciliationSourceDocFilter || "全部",
         站点: ui.reconciliationSiteFilter || "全部",
-        发起主体类型: ui.reconciliationInitiatorTypeFilter || "全部",
+        发起主体身份: ui.reconciliationInitiatorTypeFilter || "全部",
         发起主体: ui.reconciliationInitiatorFilter || "全部",
         核销关系: ui.reconciliationRelationFilter || "全部",
         核销状态: ui.reconciliationStatusFilter || "全部",
@@ -90,7 +87,7 @@ function reconciliationDisplayRows() {
             ${renderReportSelect("reconciliationObjectFilter", "核销对象", ui.reconciliationObjectFilter, uniqueRowValues(sourceRows, "核销对象"))}
             ${renderReportSelect("reconciliationSourceDocFilter", "来源单据", ui.reconciliationSourceDocFilter, uniqueRowValues(sourceRows, "来源单据"))}
             ${renderReportSelect("reconciliationSiteFilter", "站点", ui.reconciliationSiteFilter, uniqueEntityOptions(sourceRows, "站点ID", "站点名称"))}
-            ${renderReportSelect("reconciliationInitiatorTypeFilter", "发起主体类型", ui.reconciliationInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体类型"))}
+            ${renderReportSelect("reconciliationInitiatorTypeFilter", "发起主体身份", ui.reconciliationInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体身份"))}
             ${renderReportSelect("reconciliationInitiatorFilter", "发起主体", ui.reconciliationInitiatorFilter, uniqueEntityOptions(sourceRows, "发起主体ID", "发起主体名称"))}
             ${renderReportSelect("reconciliationRelationFilter", "核销关系", ui.reconciliationRelationFilter, uniqueRowValues(sourceRows, "核销关系"))}
             ${renderReportSelect("reconciliationStatusFilter", "核销状态", ui.reconciliationStatusFilter, uniqueRowValues(sourceRows, "核销状态"))}
@@ -130,7 +127,7 @@ function reconciliationDisplayRows() {
           ${renderTable({
             id: "reconciliation-ledger",
             rows,
-            columns: ["更新时间","核销对象","业务单号","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","来源单据","核销关系","金额","差异","核销状态","凭证号","关联账本","后端落账状态","财务处理建议"],
+            columns: ["更新时间","核销对象","业务单号","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","来源单据","核销关系","金额","差异","核销状态","凭证号","关联账本","后端落账状态","财务处理建议"],
             actions: row => `
               <button class="btn sm" data-action="detail-reconciliation" data-id="${escapeAttr(row._id)}">详情</button>
               ${row._voucherNo ? `<button class="btn sm" data-action="detail-voucher" data-id="${escapeAttr(row._voucherNo)}">凭证</button>` : ""}

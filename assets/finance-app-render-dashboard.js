@@ -66,12 +66,9 @@
           业务类型: profile.type,
           站点ID: attribution.站点ID,
           站点名称: attribution.站点名称,
-          发起主体类型: attribution.initiatorType,
+          发起主体身份: attribution.initiatorType,
           发起主体ID: attribution.initiatorId,
           发起主体名称: attribution.initiatorName,
-          主体类型: attribution.主体类型,
-          主体ID: attribution.主体ID,
-          主体名称: attribution.主体名称,
           代理ID: attribution.代理ID,
           代理名称: attribution.代理名称,
           会员ID: attribution.会员ID,
@@ -147,7 +144,7 @@
       return (rows || []).filter(row => {
         if (ui.businessFundingBizTypeFilter && row.业务类型 !== ui.businessFundingBizTypeFilter) return false;
         if (!rowMatchesEntityOption(row, "站点ID", "站点名称", ui.businessFundingSiteFilter)) return false;
-        if (ui.businessFundingInitiatorTypeFilter && row.发起主体类型 !== ui.businessFundingInitiatorTypeFilter) return false;
+        if (ui.businessFundingInitiatorTypeFilter && row.发起主体身份 !== ui.businessFundingInitiatorTypeFilter) return false;
         if (!rowMatchesEntityOption(row, "发起主体ID", "发起主体名称", ui.businessFundingInitiatorFilter)) return false;
         if (ui.businessFundingDirectionFilter && row.资金方向 !== ui.businessFundingDirectionFilter) return false;
         if (ui.businessFundingVoucherStatusFilter && row.借贷状态 !== ui.businessFundingVoucherStatusFilter) return false;
@@ -165,7 +162,7 @@
       return {
         业务类型: ui.businessFundingBizTypeFilter || "全部",
         站点: ui.businessFundingSiteFilter || "全部",
-        发起主体类型: ui.businessFundingInitiatorTypeFilter || "全部",
+        发起主体身份: ui.businessFundingInitiatorTypeFilter || "全部",
         发起主体: ui.businessFundingInitiatorFilter || "全部",
         资金方向: ui.businessFundingDirectionFilter || "全部",
         借贷状态: ui.businessFundingVoucherStatusFilter || "全部",
@@ -184,7 +181,7 @@
           <div class="panel-body filter-grid">
             ${renderReportSelect("businessFundingBizTypeFilter", "业务类型", ui.businessFundingBizTypeFilter, uniqueRowValues(sourceRows, "业务类型"))}
             ${renderReportSelect("businessFundingSiteFilter", "站点", ui.businessFundingSiteFilter, uniqueEntityOptions(sourceRows, "站点ID", "站点名称"))}
-            ${renderReportSelect("businessFundingInitiatorTypeFilter", "发起主体类型", ui.businessFundingInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体类型"))}
+            ${renderReportSelect("businessFundingInitiatorTypeFilter", "发起主体身份", ui.businessFundingInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体身份"))}
             ${renderReportSelect("businessFundingInitiatorFilter", "发起主体", ui.businessFundingInitiatorFilter, uniqueEntityOptions(sourceRows, "发起主体ID", "发起主体名称"))}
             ${renderReportSelect("businessFundingDirectionFilter", "资金方向", ui.businessFundingDirectionFilter, uniqueRowValues(sourceRows, "资金方向"))}
             ${renderReportSelect("businessFundingVoucherStatusFilter", "借贷状态", ui.businessFundingVoucherStatusFilter, uniqueRowValues(sourceRows, "借贷状态"))}
@@ -229,7 +226,7 @@
             ${renderTable({
               id: "dashboard-business-funding",
               rows: filteredRows(recentPostings),
-              columns: ["业务时间", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体类型", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "资金方向", "交易金额", "凭证号", "核销状态", "后端落账状态"],
+            columns: ["业务时间", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体身份", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "资金方向", "交易金额", "凭证号", "核销状态", "后端落账状态"],
               actions: row => renderBusinessFundingActions(row)
             })}
           </div>
@@ -351,7 +348,7 @@
           ${renderTable({
             id: "business-funding-details",
             rows,
-            columns: ["业务时间","业务单号","业务类型","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","资金方向","交易金额","手续费","实际入账/出款","影响余额","影响控制台账","关联账本","凭证号","借贷状态","核销状态","后端落账状态","财务处理建议"],
+              columns: ["业务时间","业务单号","业务类型","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","资金方向","交易金额","手续费","实际入账/出款","影响余额","影响控制台账","关联账本","凭证号","借贷状态","核销状态","后端落账状态","财务处理建议"],
             actions: row => renderBusinessFundingActions(row)
           })}
         </div>

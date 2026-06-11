@@ -538,7 +538,7 @@
       if (action === "detail") { const row = state.risks.find(item => item.风险编号 === target.dataset.id); openDrawer("风险详情", detailList(row)); return; }
       if (action === "detail-business-funding") {
         const row = businessFundingRows().find(item => item._id === target.dataset.id);
-        openDrawer("业务资金链路", detailList(row, ["业务时间","业务单号","业务类型","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","资金方向","交易金额","手续费","实际入账/出款","影响余额","影响控制台账","关联账本","凭证号","借贷状态","核销状态","后端落账状态","财务处理建议","技术源表","模板编码","核销关系"]));
+        openDrawer("业务资金链路", detailList(row, ["业务时间","业务单号","业务类型","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","资金方向","交易金额","手续费","实际入账/出款","影响余额","影响控制台账","关联账本","凭证号","借贷状态","核销状态","后端落账状态","财务处理建议","技术源表","模板编码","核销关系"]));
         return;
       }
       if (action === "detail-config") {
@@ -589,7 +589,7 @@
           supplementLedger: row?.supplementLedger || "",
           note: `${row?.matrixAction || ""} ${row?.supplementNote || ""}`
         }, JSON.stringify(row || {}));
-        openDrawer("凭证详情", detailList({ ...(row || {}), ...attribution }, ["voucherNo","postedAt","sourceId","bizName","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","templateCode","status","debit","credit","controlAmount","lines"]));
+        openDrawer("凭证详情", detailList({ ...(row || {}), ...attribution }, ["voucherNo","postedAt","sourceId","bizName","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","templateCode","status","debit","credit","controlAmount","lines"]));
         return;
       }
       if (action === "detail-line") {

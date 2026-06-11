@@ -29,7 +29,7 @@ function renderReportFilters() {
       <div class="panel-body filter-grid">
         <div class="field"><label>开始日期</label><input id="reportFrom" type="date" value="${escapeAttr(ui.reportFrom)}"></div>
         <div class="field"><label>结束日期</label><input id="reportTo" type="date" value="${escapeAttr(ui.reportTo)}"></div>
-        ${renderReportSelect("reportEntityTypeFilter", "发起主体类型", ui.reportEntityTypeFilter, ["总站", "站点", "代理", "会员", "三方", "场馆", "系统"])}
+        ${renderReportSelect("reportEntityTypeFilter", "发起主体身份", ui.reportEntityTypeFilter, ["总站", "站点", "代理", "会员", "三方", "场馆", "系统"])}
         <div class="field"><label>站点搜索</label><input id="reportSiteSearch" type="search" value="${escapeAttr(ui.reportSiteSearch)}" placeholder="站点ID或站点名称"></div>
         <div class="field"><label>发起主体搜索</label><input id="reportInitiatorSearch" type="search" value="${escapeAttr(ui.reportInitiatorSearch || ui.reportEntitySearch)}" placeholder="站点、代理、会员的ID或名称"></div>
         ${renderReportSelect("reportSubjectTypeFilter", "科目类型", ui.reportSubjectTypeFilter, uniqueReportValues("科目类型", rows))}
@@ -74,7 +74,7 @@ function renderBalanceReport() {
     </div>
     <div class="panel">
       <div class="panel-head"><h2 class="panel-title">资产负债科目余额</h2></div>
-      ${renderTable({ id: "report-balance", rows, columns: ["站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","业务类型","debit","credit","balance","核销状态","后端落账状态"], actions: null })}
+      ${renderTable({ id: "report-balance", rows, columns: ["站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","业务类型","debit","credit","balance","核销状态","后端落账状态"], actions: null })}
     </div>
   `;
 }
@@ -94,7 +94,7 @@ function renderIncomeCostReport() {
     </div>
     <div class="panel">
       <div class="panel-head"><h2 class="panel-title">收入成本科目余额</h2></div>
-      ${renderTable({ id: "report-income-cost", rows, columns: ["站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","业务类型","debit","credit","balance","核销状态","后端落账状态"], actions: null })}
+      ${renderTable({ id: "report-income-cost", rows, columns: ["站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","业务类型","debit","credit","balance","核销状态","后端落账状态"], actions: null })}
     </div>
   `;
 }
@@ -123,11 +123,11 @@ function renderControlReport() {
           <span class="panel-meta">按控制科目、站点和发起主体汇总，单列复核，不进入资产负债表。</span>
         </div>
       </div>
-      ${renderTable({ id: "report-control-summary", rows: summaryRows, columns: ["站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","控制账户说明","业务类型","increaseAmount","decreaseAmount","netChange","核销状态","后端落账状态"], actions: null })}
+      ${renderTable({ id: "report-control-summary", rows: summaryRows, columns: ["站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","控制账户说明","业务类型","increaseAmount","decreaseAmount","netChange","核销状态","后端落账状态"], actions: null })}
     </div>
     <div class="panel">
       <div class="panel-head"><h2 class="panel-title">信用台账明细</h2></div>
-      ${renderTable({ id: "report-control", rows, columns: ["凭证号","业务单号","业务类型","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","direction","increaseAmount","decreaseAmount","netChange","expression","核销状态","后端落账状态","note"], actions: null })}
+      ${renderTable({ id: "report-control", rows, columns: ["凭证号","业务单号","业务类型","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","subjectCode","subjectName","subjectType","direction","increaseAmount","decreaseAmount","netChange","expression","核销状态","后端落账状态","note"], actions: null })}
     </div>
   `;
 }

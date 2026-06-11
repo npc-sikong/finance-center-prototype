@@ -14,15 +14,13 @@
         业务类型: row.业务类型,
         站点ID: row.站点ID,
         站点名称: row.站点名称,
-        发起主体类型: row.发起主体类型,
+        发起主体身份: row.发起主体身份,
         发起主体ID: row.发起主体ID,
         发起主体名称: row.发起主体名称,
         代理ID: row.代理ID,
         代理名称: row.代理名称,
         会员ID: row.会员ID,
         会员名称: row.会员名称,
-        主体类型: row.主体类型,
-        主体: row.主体名称,
         subjectCode: row.subjectCode,
         subjectName: row.subjectName,
         subjectType: row.subjectType || "信用台账",
@@ -45,15 +43,13 @@
           业务类型: row.业务类型,
           站点ID: row.站点ID,
           站点名称: row.站点名称,
-          发起主体类型: row.发起主体类型,
+          发起主体身份: row.发起主体身份,
           发起主体ID: row.发起主体ID,
           发起主体名称: row.发起主体名称,
           代理ID: row.代理ID,
           代理名称: row.代理名称,
           会员ID: row.会员ID,
           会员名称: row.会员名称,
-          主体类型: row.主体类型,
-          主体: row.主体名称,
           统计模块: tab,
           科目编码: row.subjectCode,
           科目名称: row.subjectName,
@@ -81,8 +77,7 @@
           _voucherNo: row.凭证号,
           业务单号: row.源单,
           业务类型: row.闭环主题,
-          主体类型: reportEntityTypesForText(JSON.stringify(row)),
-          主体: row.责任模块,
+          发起主体身份: reportEntityTypesForText(JSON.stringify(row)),
           统计模块: tab,
           科目编码: row.报表科目,
           科目名称: row.闭环主题,
@@ -142,8 +137,8 @@
 
     function preferredFinanceStatColumns(tab, rows) {
       if (tab === "统计总览") return ["统计模块", "行数", "金额", "净变动", "待处理", "主要科目", "口径"];
-      if (tab === "信用台账余额") return ["日期", "凭证号", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体类型", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "subjectCode", "subjectName", "方向", "金额", "净变动", "状态", "备注"];
-      return ["日期", "凭证号", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体类型", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "统计模块", "科目编码", "科目名称", "科目类型", "方向", "金额", "借方金额", "贷方金额", "状态", "核销键", "缺口编号", "闭环状态", "后端落地状态"];
+      if (tab === "信用台账余额") return ["日期", "凭证号", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体身份", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "subjectCode", "subjectName", "方向", "金额", "净变动", "状态", "备注"];
+      return ["日期", "凭证号", "业务单号", "业务类型", "站点ID", "站点名称", "发起主体身份", "发起主体ID", "发起主体名称", "代理ID", "代理名称", "会员ID", "会员名称", "统计模块", "科目编码", "科目名称", "科目类型", "方向", "金额", "借方金额", "贷方金额", "状态", "核销键", "缺口编号", "闭环状态", "后端落地状态"];
     }
 
     function filterFinanceStatRows(rows) {
@@ -152,9 +147,9 @@
         if (ui.financeStatFrom && day && day < ui.financeStatFrom) return false;
         if (ui.financeStatTo && day && day > ui.financeStatTo) return false;
         if (ui.financeStatSubject && !normalize(JSON.stringify(row)).includes(normalize(ui.financeStatSubject))) return false;
-        if (ui.financeStatEntityTypeFilter && !String(row.发起主体类型 || row.主体类型 || "").includes(ui.financeStatEntityTypeFilter)) return false;
+        if (ui.financeStatEntityTypeFilter && !String(row.发起主体身份 || "").includes(ui.financeStatEntityTypeFilter)) return false;
         if (ui.financeStatSiteSearch && !normalize([row.站点ID, row.站点名称].join(" ")).includes(normalize(ui.financeStatSiteSearch))) return false;
-        if (ui.financeStatInitiatorSearch && !normalize([row.发起主体类型, row.发起主体ID, row.发起主体名称, row.主体, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(normalize(ui.financeStatInitiatorSearch))) return false;
+        if (ui.financeStatInitiatorSearch && !normalize([row.发起主体身份, row.发起主体ID, row.发起主体名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(normalize(ui.financeStatInitiatorSearch))) return false;
         if (ui.financeStatBizTypeFilter && row.业务类型 !== ui.financeStatBizTypeFilter) return false;
         if (ui.financeStatSubjectTypeFilter && (row.科目类型 || row.subjectType) !== ui.financeStatSubjectTypeFilter) return false;
         if (ui.financeStatStatusFilter && row.状态 !== ui.financeStatStatusFilter) return false;
@@ -173,7 +168,7 @@
         筛选条件: {
           开始日期: ui.financeStatFrom || "全部",
           结束日期: ui.financeStatTo || "全部",
-          发起主体类型: ui.financeStatEntityTypeFilter || "全部",
+          发起主体身份: ui.financeStatEntityTypeFilter || "全部",
           站点搜索: ui.financeStatSiteSearch || "全部",
           发起主体搜索: ui.financeStatInitiatorSearch || "全部",
           主体搜索: ui.financeStatSubject || "全部",

@@ -240,12 +240,9 @@ function render() {
           业务主体: row.businessEntity || def?.业务主体 || "",
           站点ID: attribution.站点ID,
           站点名称: attribution.站点名称,
-          发起主体类型: attribution.initiatorType,
+          发起主体身份: attribution.initiatorType,
           发起主体ID: attribution.initiatorId,
           发起主体名称: attribution.initiatorName,
-          主体类型: attribution.主体类型,
-          主体ID: attribution.主体ID,
-          主体名称: attribution.主体名称,
           代理ID: attribution.代理ID,
           代理名称: attribution.代理名称,
           会员ID: attribution.会员ID,
@@ -264,7 +261,7 @@ function render() {
     function filterLedgerAuditRows(rows) {
       return (rows || []).filter(row => {
         const subject = normalize(ui.ledgerSubjectFilter || "");
-        if (subject && !normalize([row.主体, row.业务主体, row.发起主体类型, row.发起主体ID, row.发起主体名称, row.主体类型, row.主体ID, row.主体名称, row.站点ID, row.站点名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(subject)) return false;
+        if (subject && !normalize([row.主体, row.业务主体, row.发起主体身份, row.发起主体ID, row.发起主体名称, row.站点ID, row.站点名称, row.代理ID, row.代理名称, row.会员ID, row.会员名称].join(" ")).includes(subject)) return false;
         if (ui.ledgerBusinessEntityFilter && row.业务主体 !== ui.ledgerBusinessEntityFilter) return false;
         if (ui.ledgerBizTypeFilter && row.业务类型 !== ui.ledgerBizTypeFilter) return false;
         if (ui.ledgerDirectionFilter && row.方向 !== ui.ledgerDirectionFilter) return false;
@@ -554,7 +551,7 @@ function render() {
           ${renderTable({
             id: `ledger-${activeDef.模块}`,
             rows,
-            columns: ["业务时间","业务单号","业务类型","影响账本","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","方向","金额","前值","后值","凭证号","核销状态","结账期间","入账口径"],
+            columns: ["业务时间","业务单号","业务类型","影响账本","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","方向","金额","前值","后值","凭证号","核销状态","结账期间","入账口径"],
             actions: row => renderLedgerRowActions(row, activeDef)
           })}
         </div>
@@ -609,12 +606,9 @@ function render() {
           业务类型: row.bizName,
           站点ID: attribution.站点ID,
           站点名称: attribution.站点名称,
-          发起主体类型: attribution.initiatorType,
+          发起主体身份: attribution.initiatorType,
           发起主体ID: attribution.initiatorId,
           发起主体名称: attribution.initiatorName,
-          主体类型: attribution.主体类型,
-          主体ID: attribution.主体ID,
-          主体名称: attribution.主体名称,
           代理ID: attribution.代理ID,
           代理名称: attribution.代理名称,
           会员ID: attribution.会员ID,
@@ -639,7 +633,7 @@ function render() {
       return (rows || []).filter(row => {
         if (ui.entryBizTypeFilter && row.业务类型 !== ui.entryBizTypeFilter) return false;
         if (!rowMatchesEntityOption(row, "站点ID", "站点名称", ui.entrySiteFilter)) return false;
-        if (ui.entryInitiatorTypeFilter && row.发起主体类型 !== ui.entryInitiatorTypeFilter) return false;
+        if (ui.entryInitiatorTypeFilter && row.发起主体身份 !== ui.entryInitiatorTypeFilter) return false;
         if (!rowMatchesEntityOption(row, "发起主体ID", "发起主体名称", ui.entryInitiatorFilter)) return false;
         if (ui.entryVoucherFilter && row.凭证号 !== ui.entryVoucherFilter) return false;
         if (ui.entryTemplateFilter && row.模板编码 !== ui.entryTemplateFilter) return false;
@@ -657,7 +651,7 @@ function render() {
       return {
         业务类型: ui.entryBizTypeFilter || "全部",
         站点: ui.entrySiteFilter || "全部",
-        发起主体类型: ui.entryInitiatorTypeFilter || "全部",
+        发起主体身份: ui.entryInitiatorTypeFilter || "全部",
         发起主体: ui.entryInitiatorFilter || "全部",
         凭证号: ui.entryVoucherFilter || "全部",
         模板编码: ui.entryTemplateFilter || "全部",
@@ -677,7 +671,7 @@ function render() {
           <div class="panel-body filter-grid">
             ${renderReportSelect("entryBizTypeFilter", "业务类型", ui.entryBizTypeFilter, uniqueRowValues(sourceRows, "业务类型"))}
             ${renderReportSelect("entrySiteFilter", "站点", ui.entrySiteFilter, uniqueEntityOptions(sourceRows, "站点ID", "站点名称"))}
-            ${renderReportSelect("entryInitiatorTypeFilter", "发起主体类型", ui.entryInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体类型"))}
+            ${renderReportSelect("entryInitiatorTypeFilter", "发起主体身份", ui.entryInitiatorTypeFilter, uniqueRowValues(sourceRows, "发起主体身份"))}
             ${renderReportSelect("entryInitiatorFilter", "发起主体", ui.entryInitiatorFilter, uniqueEntityOptions(sourceRows, "发起主体ID", "发起主体名称"))}
             ${renderReportSelect("entryVoucherFilter", "凭证号", ui.entryVoucherFilter, uniqueRowValues(sourceRows, "凭证号"))}
             ${renderReportSelect("entryTemplateFilter", "模板编码", ui.entryTemplateFilter, uniqueRowValues(sourceRows, "模板编码"))}
@@ -715,7 +709,7 @@ function render() {
           ${renderTable({
             id: "accounting-entry-changes",
             rows: changeRows,
-            columns: ["业务时间","源业务单号","业务类型","站点ID","站点名称","发起主体类型","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","凭证号","模板编码","分录步骤","正式分录行","信用台账行","借方金额","贷方金额","信用台账金额","借贷状态","对应账本","核销关系","后端覆盖","缺口和补记建议"],
+            columns: ["业务时间","源业务单号","业务类型","站点ID","站点名称","发起主体身份","发起主体ID","发起主体名称","代理ID","代理名称","会员ID","会员名称","凭证号","模板编码","分录步骤","正式分录行","信用台账行","借方金额","贷方金额","信用台账金额","借贷状态","对应账本","核销关系","后端覆盖","缺口和补记建议"],
             actions: row => `
               <button class="btn sm" data-action="detail-voucher" data-id="${escapeAttr(row._voucherNo)}">凭证详情</button>
             `
@@ -841,7 +835,7 @@ function render() {
           <div class="panel-body ledger-list-filters">
             <div class="field compact"><label>开始日期</label><input id="financeStatFrom" type="date" value="${escapeAttr(ui.financeStatFrom)}"></div>
             <div class="field compact"><label>结束日期</label><input id="financeStatTo" type="date" value="${escapeAttr(ui.financeStatTo)}"></div>
-            ${renderReportSelect("financeStatEntityTypeFilter", "发起主体类型", ui.financeStatEntityTypeFilter, ["总站", "站点", "代理", "会员", "三方", "场馆", "系统"])}
+            ${renderReportSelect("financeStatEntityTypeFilter", "发起主体身份", ui.financeStatEntityTypeFilter, ["总站", "站点", "代理", "会员", "三方", "场馆", "系统"])}
             <div class="field compact"><label>站点搜索</label><input id="financeStatSiteSearch" type="search" value="${escapeAttr(ui.financeStatSiteSearch)}" placeholder="站点ID或名称"></div>
             <div class="field compact"><label>发起主体搜索</label><input id="financeStatInitiatorSearch" type="search" value="${escapeAttr(ui.financeStatInitiatorSearch)}" placeholder="代理、会员、站点"></div>
             <div class="field compact"><label>主体/通道/账本</label><input id="financeStatSubject" type="search" value="${escapeAttr(ui.financeStatSubject)}" placeholder="站点、代理、会员、三方、官方账户"></div>
